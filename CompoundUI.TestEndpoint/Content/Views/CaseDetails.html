@@ -1,0 +1,56 @@
+﻿<!--
+@*********************************************************************************************************************@
+@**                             This view is owned by the Cases Service                                             **@
+@**                  Any changes should be made in Case.Views or they will be overwritten                           **@
+@*********************************************************************************************************************@
+-->
+
+<div class="container">
+    <div class="row">
+        <section class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12 object-details">
+            <h1 class="like-legend">{{cases.caseDetails.Name}}</h1>
+            <ul class="object-info">
+                <li>Case reference: {{cases.caseDetails.Id}}</li>
+                <li class="hidden">Created by: <span data-get-user data-hidden="true" data-user-id="{{cases.caseDetails.CreatedBy}}"></span></li>
+                <li>Date created: <span ng-bind-html="cases.caseDetails.CreatedOn | friendlyDate:'date'"></span></li>
+                <li>Time created: <span ng-bind-html="cases.caseDetails.CreatedOn | friendlyDate:'time'"></span></li>
+            </ul>
+            <div class="row object-actions">
+                <div class="col-xs-12 col-sm-4">
+                    Caseworkers:
+                    <div>
+                        <a data-ui-sref="manage.cases.case.adduser">New</a>
+                    </div>
+                    <div data-ng-show="cases.caseDetails.ConnectedUsersIds.length"><a href="" data-ng-click="viewConnectedUsers()">View</a></div>
+                    <div data-ng-show="!cases.caseDetails.ConnectedUsersIds.length">You haven't added any caseworkers</div>
+                </div>
+                <div class="col-xs-12 col-sm-4 hidden">
+                    <a href="" class="btn btn-bt-four">Tasks</a>
+                </div>
+                <div class="col-xs-12 col-sm-4 pull-right">
+                    Items:<br /><a data-ui-sref=".item">New</a>
+                </div>
+            </div>
+            <hr />
+            <form novalidate name="caseForm" data-ng-submit="submitCaseDescription()">
+                <div id="case-details" class="form-group" data-ng-class="mode">
+                    <i class="pull-right glyphicon glyphicon-edit" data-ng-click="edit()" id="edit-description"></i>
+                    <h2 class="like-legend no-border">Case Description</h2>
+                    <div class="alert alert-success follow-hr" data-ng-cloak data-ng-show="messages.success">Description has been saved successfully.</div>
+                    <div class="alert alert-danger follow-hr" data-ng-cloak data-ng-show="messages.errors">Sorry, we were not able to save your changes.</div>
+                    <div class="form-group has-feedback">
+                        <textarea name="description" id="casedetail-description" class="form-control edit" data-ng-model="cases.caseDetails.Description" data-ng-disabled="isDisabled" required data-custom-validation />
+                        <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+                        <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                    </div>
+                    <div class="form-button-group">
+                        <button type="button" class="btn btn-bt-two" data-ng-click="cancel()">Cancel</button>
+                        <button type="submit" class="btn btn-bt-one" data-ng-disabled="canSave()">Save</button>
+                    </div>
+                </div>
+            </form>
+            <hr />
+            <div data-notes data-list="{{cases.caseDetails.CaseNotes}}" data-service="CasesService" data-title="Case Notes" data-new-btn-text="New Note" data-add-btn-text="Add Note" data-parent-id="{{cases.caseDetails.Id}}"></div>
+        </section>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+<!--
+@*********************************************************************************************************************@
+@**                             This view is owned by the Cases Service                                             **@
+@**                  Any changes should be made in Case.Views or they will be overwritten                           **@
+@*********************************************************************************************************************@
+-->
+
+<div class="container">
+    <div class="row">
+        <section class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12">
+            <div data-ng-show="cases.allCases.length">
+                <ul data-ng-repeat="item in cases.allCases">
+                    <li>
+                        Case Name : <strong>{{ item.Name }}</strong>
+                        <br />
+                        Case Desciption : <strong>
+                                {{item.Description | cut:true:100:' ...'}}
+                            </strong>
+                            <br />
+                            <a data-ui-sref=".case({CaseID: item.Id})" class="btn">View case</a>
+                    </li>
+                </ul>
+            </div>
+            <div data-ng-show="!cases.allCases.length">
+                <p>You haven't created any cases.</p>
+            </div>
+        </section>
+    </div>
+</div>
