@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using HtmlAgilityPack;
 using NSubstitute;
@@ -18,10 +19,10 @@ namespace CompoundUI.UnitTests
                 var htmlParser = GetHtmlParser();
 
                 // Act
-                htmlParser.Parse(htmlText);
+                var parsedHtml = htmlParser.Parse(htmlText);
 
                 // Assert
-                htmlParser.GetParsedHtml().Should().Contain("div");
+                parsedHtml.Should().Contain("div");
             }
 
             [Fact]
@@ -32,11 +33,11 @@ namespace CompoundUI.UnitTests
                 var htmlParser = GetHtmlParser();
 
                 // Act
-                htmlParser.Parse(htmlWith3ReplacableSections);
+                var parsedHtml = htmlParser.Parse(htmlWith3ReplacableSections);
 
                 // Assert
                 var htmlDoc = new HtmlDocument();
-                htmlDoc.LoadHtml(htmlParser.GetParsedHtml());
+                htmlDoc.LoadHtml(parsedHtml);
                 var embeddedDivs = htmlDoc.DocumentNode.SelectNodes("//div");
                 embeddedDivs.Should().HaveCount(3);
             }
@@ -48,14 +49,34 @@ namespace CompoundUI.UnitTests
                 var htmlToEmbed = "<p>Embedded html from source</p>";
                 var sourceResolver = Substitute.For<IResolveHtmlSources>();
                 sourceResolver.Resolve("http://test.com").Returns(htmlToEmbed);
-                var htmlText = "<html><body><trns src='http://test.com'></trns></body></html>";
+                var htmlText = "<html><body><trns src='http://test.com'></trns><trns src='http://test.com'></trns></body></html>";
+                var htmlParser = GetHtmlParser(sourceResolver);
+
+                // Act
+                var parsedHtml = htmlParser.Parse(htmlText);
+
+                // Assert
+                var htmlDoc = new HtmlDocument();
+                htmlDoc.LoadHtml(parsedHtml);
+                var embeddedDivs = htmlDoc.DocumentNode.SelectNodes("//div");
+                embeddedDivs.Should().HaveCount(2);
+                embeddedDivs[0].InnerHtml.Should().Be(htmlToEmbed);
+                embeddedDivs[1].InnerHtml.Should().Be(htmlToEmbed);
+            }
+
+            [Fact]
+            public void ShouldNotRedownloadHtmlWhenItHasAlreadyBeenDownloaded()
+            {
+                // Arrange
+                var sourceResolver = Substitute.For<IResolveHtmlSources>();
+                var htmlText = "<html><body><trns src='http://test.com'></trns><trns src='http://test.com'></trns></body></html>";
                 var htmlParser = GetHtmlParser(sourceResolver);
 
                 // Act
                 htmlParser.Parse(htmlText);
 
                 // Assert
-                htmlParser.GetParsedHtml().Should().Contain(htmlToEmbed);
+                sourceResolver.Received(1).Resolve("http://test.com");
             }
 
             private HtmlParser GetHtmlParser(IResolveHtmlSources resolveHtmlSources = null)
@@ -72,6 +93,7 @@ namespace CompoundUI.UnitTests
 
     public class HtmlParser
     {
+        private Dictionary<string, string> content = new Dictionary<string, string>(); 
         private readonly IResolveHtmlSources _htmlSourcesResolver;
         private HtmlDocument _htmlDocument;
 
@@ -80,7 +102,7 @@ namespace CompoundUI.UnitTests
             _htmlSourcesResolver = htmlSourcesResolver;
         }
 
-        public void Parse(string htmlText)
+        public string Parse(string htmlText)
         {
             _htmlDocument = new HtmlDocument();
             _htmlDocument.LoadHtml(htmlText);
@@ -88,16 +110,20 @@ namespace CompoundUI.UnitTests
             foreach (var transcludorNode in transcludorNodes)
             {
                 var htmlSource = transcludorNode.Attributes["src"].Value;
-                var html = _htmlSourcesResolver.Resolve(htmlSource);
+                var html = content.ContainsKey(htmlSource) ? content[htmlSource] : _htmlSourcesResolver.Resolve(htmlSource);
+                if(!content.ContainsKey(htmlSource)) content.Add(htmlSource, html);
                 var newNode = HtmlNode.CreateNode(String.Format("<div>{0}</div>", html));
                 transcludorNode.ParentNode.ReplaceChild(newNode, transcludorNode);
             }
-        }
 
-        public string GetParsedHtml()
-        {
             return _htmlDocument.DocumentNode.OuterHtml;
         }
 
+    }
+
+    public interface ICacheStorage
+    {
+        T Get<T>(string key);
+        void Add<T>(string key, T item);
     }
 }
