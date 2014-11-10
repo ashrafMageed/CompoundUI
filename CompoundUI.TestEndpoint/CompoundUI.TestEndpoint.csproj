@@ -89,16 +89,30 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Controllers\CaseDetailsController.js" />
-    <Content Include="Content\Controllers\CreateCasesController.js" />
-    <Content Include="Content\Controllers\ListCasesController.js" />
+    <EmbeddedResource Include="Content\Controllers\CaseDetailsController.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Controllers\CreateCasesController.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Controllers\ListCasesController.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Content\Pages\Index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <Content Include="Content\Services\CasesService.js" />
-    <Content Include="Content\Views\CaseDetails.html" />
-    <Content Include="Content\Views\CreateCase.html" />
-    <Content Include="Content\Views\ListCases.html" />
+    <EmbeddedResource Include="Content\Services\CasesService.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Views\CaseDetails.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Views\CreateCase.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Content\Views\ListCases.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
