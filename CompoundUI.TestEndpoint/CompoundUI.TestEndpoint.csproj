@@ -125,6 +125,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Directives\" />
+    <Folder Include="Content\Static\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CompoundUI.Core\CompoundUI.Core.csproj">

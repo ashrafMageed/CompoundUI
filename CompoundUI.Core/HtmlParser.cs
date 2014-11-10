@@ -24,6 +24,10 @@ namespace CompoundUI.Core
                 var htmlSource = transcludorNode.Attributes["src"].Value;
                 var html = _cacheStorage.Get(htmlSource, () => _htmlSourcesResolver.Resolve(htmlSource));
                 var newNode = HtmlNode.CreateNode(String.Format("<div>{0}</div>", html));
+
+                if (transcludorNode.HasChildNodes)
+                    newNode.FirstChild.AppendChildren(transcludorNode.ChildNodes);
+
                 transcludorNode.ParentNode.ReplaceChild(newNode, transcludorNode);
             }
 

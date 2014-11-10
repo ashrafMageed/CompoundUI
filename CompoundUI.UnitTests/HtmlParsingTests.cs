@@ -78,6 +78,30 @@ namespace CompoundUI.UnitTests
                 sourceResolver.Received(1).Resolve("http://test4.com");
             }
 
+            [Fact]
+            public void ShouldHandleNestedTranscludors()
+            {
+                // Arrange
+                var outerHtml = "<p>outer html</p>";
+                var innerHtml = "<p>inner html</p>";
+                var expectedHtml = "<p>outer html<div><p>inner html</p></div></p>";
+                var sourceResolver = Substitute.For<IResolveHtmlSources>();
+                sourceResolver.Resolve("http://test6.com").Returns(outerHtml);
+                sourceResolver.Resolve("http://test6.com/embedded").Returns(innerHtml);
+                var htmlText = "<html><body><trns src='http://test6.com'><trns src='http://test6.com/embedded'></trns></trns></body></html>";
+                var htmlParser = GetHtmlParser(sourceResolver);
+
+                // Act
+                var parsedHtml = htmlParser.Parse(htmlText);
+
+                // Assert
+                var htmlDoc = new HtmlDocument();
+                htmlDoc.LoadHtml(parsedHtml);
+                var embeddedDivs = htmlDoc.DocumentNode.SelectNodes("//div");
+                embeddedDivs.Should().HaveCount(2);
+                embeddedDivs[0].InnerHtml.Should().Be(expectedHtml);
+            }
+
             private HtmlParser GetHtmlParser(IResolveHtmlSources resolveHtmlSources = null)
             {
                 return new HtmlParser(resolveHtmlSources ?? Substitute.For<IResolveHtmlSources>(), InMemoryCacheStorage.Instance);
