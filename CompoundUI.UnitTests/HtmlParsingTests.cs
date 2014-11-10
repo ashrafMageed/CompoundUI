@@ -15,7 +15,7 @@ namespace CompoundUI.UnitTests
             public void ShouldReplaceATransclusionElementsWithDivs()
             {
                 // Arrange
-                var htmlText = "<html><body><trns src='http://test.com'></trns></body></html>";
+                var htmlText = "<html><body><trns src='http://test1.com'></trns></body></html>";
                 var htmlParser = GetHtmlParser();
 
                 // Act
@@ -29,7 +29,7 @@ namespace CompoundUI.UnitTests
             public void ShouldReplaceAllTransclusionElementsWithDivs()
             {
                 // Arrange
-                var htmlWith3ReplacableSections = "<html><body><trns src='http://test.com'></trns><p>Test</p><trns src='http://test.com'></trns><trns src='http://test.com'></trns></body></html>";
+                var htmlWith3ReplacableSections = "<html><body><trns src='http://test2.com'></trns><p>Test</p><trns src='http://test2.com'></trns><trns src='http://test2.com'></trns></body></html>";
                 var htmlParser = GetHtmlParser();
 
                 // Act
@@ -48,8 +48,8 @@ namespace CompoundUI.UnitTests
                 // Arrange
                 var htmlToEmbed = "<p>Embedded html from source</p>";
                 var sourceResolver = Substitute.For<IResolveHtmlSources>();
-                sourceResolver.Resolve("http://test.com").Returns(htmlToEmbed);
-                var htmlText = "<html><body><trns src='http://test.com'></trns><trns src='http://test.com'></trns></body></html>";
+                sourceResolver.Resolve("http://test3.com").Returns(htmlToEmbed);
+                var htmlText = "<html><body><trns src='http://test3.com'></trns><trns src='http://test3.com'></trns></body></html>";
                 var htmlParser = GetHtmlParser(sourceResolver);
 
                 // Act
@@ -69,19 +69,19 @@ namespace CompoundUI.UnitTests
             {
                 // Arrange
                 var sourceResolver = Substitute.For<IResolveHtmlSources>();
-                var htmlText = "<html><body><trns src='http://test.com'></trns><trns src='http://test.com'></trns></body></html>";
+                var htmlText = "<html><body><trns src='http://test4.com'></trns><trns src='http://test4.com'></trns></body></html>";
                 var htmlParser = GetHtmlParser(sourceResolver);
 
                 // Act
                 htmlParser.Parse(htmlText);
 
                 // Assert
-                sourceResolver.Received(1).Resolve("http://test.com");
+                sourceResolver.Received(1).Resolve("http://test4.com");
             }
 
             private HtmlParser GetHtmlParser(IResolveHtmlSources resolveHtmlSources = null)
             {
-                return new HtmlParser(resolveHtmlSources ?? Substitute.For<IResolveHtmlSources>());
+                return new HtmlParser(resolveHtmlSources ?? Substitute.For<IResolveHtmlSources>(), InMemoryCacheStorage.Instance);
             }
         }
     }
@@ -93,37 +93,56 @@ namespace CompoundUI.UnitTests
 
     public class HtmlParser
     {
-        private Dictionary<string, string> content = new Dictionary<string, string>(); 
         private readonly IResolveHtmlSources _htmlSourcesResolver;
-        private HtmlDocument _htmlDocument;
+        private readonly ICacheStorage _cacheStorage;
 
-        public HtmlParser(IResolveHtmlSources htmlSourcesResolver)
+        public HtmlParser(IResolveHtmlSources htmlSourcesResolver, ICacheStorage cacheStorage)
         {
             _htmlSourcesResolver = htmlSourcesResolver;
+            _cacheStorage = cacheStorage;
         }
 
         public string Parse(string htmlText)
         {
-            _htmlDocument = new HtmlDocument();
-            _htmlDocument.LoadHtml(htmlText);
-            var transcludorNodes = _htmlDocument.DocumentNode.SelectNodes("//trns");
+            var htmlDocument = new HtmlDocument();
+            htmlDocument.LoadHtml(htmlText);
+            var transcludorNodes = htmlDocument.DocumentNode.SelectNodes("//trns");
             foreach (var transcludorNode in transcludorNodes)
             {
                 var htmlSource = transcludorNode.Attributes["src"].Value;
-                var html = content.ContainsKey(htmlSource) ? content[htmlSource] : _htmlSourcesResolver.Resolve(htmlSource);
-                if(!content.ContainsKey(htmlSource)) content.Add(htmlSource, html);
+                var html = _cacheStorage.Get(htmlSource, () => _htmlSourcesResolver.Resolve(htmlSource));
                 var newNode = HtmlNode.CreateNode(String.Format("<div>{0}</div>", html));
                 transcludorNode.ParentNode.ReplaceChild(newNode, transcludorNode);
             }
 
-            return _htmlDocument.DocumentNode.OuterHtml;
+            return htmlDocument.DocumentNode.OuterHtml;
         }
 
     }
 
+    public sealed class InMemoryCacheStorage : ICacheStorage
+    {
+        private static readonly Lazy<InMemoryCacheStorage>  _lazy = new Lazy<InMemoryCacheStorage>(() => new InMemoryCacheStorage());
+
+        private static readonly Dictionary<string, object> _storage = new Dictionary<string, object>();
+
+        public static InMemoryCacheStorage Instance { get { return _lazy.Value; }}
+
+        private InMemoryCacheStorage() {}
+
+        public T Get<T>(string key, Func<T> getWhenCacheMiss)
+        {
+            if (_storage.ContainsKey(key))
+                return (T)_storage[key];
+
+            var item = getWhenCacheMiss();
+            _storage.Add(key, item);
+            return item;
+        }
+    }
+
     public interface ICacheStorage
     {
-        T Get<T>(string key);
-        void Add<T>(string key, T item);
+        T Get<T>(string key, Func<T> getWhenCacheMiss);
     }
 }
