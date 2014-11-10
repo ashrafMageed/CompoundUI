@@ -92,6 +92,9 @@
     <Content Include="Content\Controllers\CaseDetailsController.js" />
     <Content Include="Content\Controllers\CreateCasesController.js" />
     <Content Include="Content\Controllers\ListCasesController.js" />
+    <EmbeddedResource Include="Content\Pages\Index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="Content\Services\CasesService.js" />
     <Content Include="Content\Views\CaseDetails.html" />
     <Content Include="Content\Views\CreateCase.html" />
@@ -101,6 +104,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\ContentController.cs" />
+    <Compile Include="Controllers\TextPlainFormatter.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Controllers\CasesViewController.cs" />
     <Compile Include="Global.asax.cs">
@@ -120,6 +125,12 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Directives\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CompoundUI.Core\CompoundUI.Core.csproj">
+      <Project>{37F28879-ABC6-41F1-9D90-4F22350B45DA}</Project>
+      <Name>CompoundUI.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
