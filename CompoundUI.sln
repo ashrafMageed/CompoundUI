@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompoundUI.Composition", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompoundUI.CompositionHost", "CompoundUI.CompositionHost\CompoundUI.CompositionHost.csproj", "{0BB91170-469E-41DE-961E-2BF32B2E4DAD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestFrontEnd", "TestFrontEnd\TestFrontEnd.csproj", "{48642978-8F94-4F32-BCCB-85511A3C6B96}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +72,12 @@ Global
 		{0BB91170-469E-41DE-961E-2BF32B2E4DAD}.Production|Any CPU.Build.0 = Release|Any CPU
 		{0BB91170-469E-41DE-961E-2BF32B2E4DAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BB91170-469E-41DE-961E-2BF32B2E4DAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48642978-8F94-4F32-BCCB-85511A3C6B96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48642978-8F94-4F32-BCCB-85511A3C6B96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48642978-8F94-4F32-BCCB-85511A3C6B96}.Production|Any CPU.ActiveCfg = Release|Any CPU
+		{48642978-8F94-4F32-BCCB-85511A3C6B96}.Production|Any CPU.Build.0 = Release|Any CPU
+		{48642978-8F94-4F32-BCCB-85511A3C6B96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48642978-8F94-4F32-BCCB-85511A3C6B96}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

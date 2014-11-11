@@ -16,8 +16,8 @@ namespace CompoundUI.TestEndpoint.Controllers
             var applicationPath = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
             var pagesDirectory = Path.Combine(applicationPath, @"Content\");
             var pageStringBuilder = new StringBuilder();
-            pageStringBuilder.Append(EncloseInScriptTags(File.ReadAllText(String.Format(@"{0}\Controllers\{1}Controller.js", pagesDirectory, viewName))));
-            pageStringBuilder.Append(EncloseInScriptTags(File.ReadAllText(String.Format(@"{0}\Services\CasesService.js", pagesDirectory))));
+            //pageStringBuilder.Append(EncloseInScriptTags(File.ReadAllText(String.Format(@"{0}\Controllers\{1}Controller.js", pagesDirectory, viewName))));
+            //pageStringBuilder.Append(EncloseInScriptTags(File.ReadAllText(String.Format(@"{0}\Services\CasesService.js", pagesDirectory))));
             pageStringBuilder.Append(File.ReadAllText(String.Format(@"{0}\Views\{1}.html", pagesDirectory, viewName)));
             var responseBody = pageStringBuilder.ToString();
             var response = Request.CreateResponse(System.Net.HttpStatusCode.OK, responseBody, new TextPlainFormatter());
