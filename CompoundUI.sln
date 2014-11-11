@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompoundUI.TestEndpoint", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompoundUI.Host", "CompoundUI.Host\CompoundUI.Host.csproj", "{2B9014BE-2DA8-4B7A-B4EB-A069F020E87E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestFrontEnd", "TestFrontEnd\TestFrontEnd.csproj", "{48642978-8F94-4F32-BCCB-85511A3C6B96}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{64530FAE-2585-4FA4-989D-B77703253527}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompoundUI.UnitTests", "CompoundUI.UnitTests\CompoundUI.UnitTests.csproj", "{D2A90274-CA03-4343-A1EC-F05CA154F514}"
@@ -18,6 +16,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7596001B-3EC7-479A-94ED-9FCD43DF42E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompoundUI.Core", "CompoundUI.Core\CompoundUI.Core.csproj", "{37F28879-ABC6-41F1-9D90-4F22350B45DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompoundUI.Composition", "CompoundUI.Composition\CompoundUI.Composition.csproj", "{381930EE-78B7-458B-BA18-12657B6065F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompoundUI.CompositionHost", "CompoundUI.CompositionHost\CompoundUI.CompositionHost.csproj", "{0BB91170-469E-41DE-961E-2BF32B2E4DAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,12 +40,6 @@ Global
 		{2B9014BE-2DA8-4B7A-B4EB-A069F020E87E}.Production|Any CPU.Build.0 = Release|Any CPU
 		{2B9014BE-2DA8-4B7A-B4EB-A069F020E87E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B9014BE-2DA8-4B7A-B4EB-A069F020E87E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{48642978-8F94-4F32-BCCB-85511A3C6B96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{48642978-8F94-4F32-BCCB-85511A3C6B96}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{48642978-8F94-4F32-BCCB-85511A3C6B96}.Production|Any CPU.ActiveCfg = Release|Any CPU
-		{48642978-8F94-4F32-BCCB-85511A3C6B96}.Production|Any CPU.Build.0 = Release|Any CPU
-		{48642978-8F94-4F32-BCCB-85511A3C6B96}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{48642978-8F94-4F32-BCCB-85511A3C6B96}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D2A90274-CA03-4343-A1EC-F05CA154F514}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D2A90274-CA03-4343-A1EC-F05CA154F514}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2A90274-CA03-4343-A1EC-F05CA154F514}.Production|Any CPU.ActiveCfg = Release|Any CPU
@@ -62,6 +58,18 @@ Global
 		{37F28879-ABC6-41F1-9D90-4F22350B45DA}.Production|Any CPU.Build.0 = Release|Any CPU
 		{37F28879-ABC6-41F1-9D90-4F22350B45DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37F28879-ABC6-41F1-9D90-4F22350B45DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{381930EE-78B7-458B-BA18-12657B6065F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{381930EE-78B7-458B-BA18-12657B6065F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{381930EE-78B7-458B-BA18-12657B6065F1}.Production|Any CPU.ActiveCfg = Release|Any CPU
+		{381930EE-78B7-458B-BA18-12657B6065F1}.Production|Any CPU.Build.0 = Release|Any CPU
+		{381930EE-78B7-458B-BA18-12657B6065F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{381930EE-78B7-458B-BA18-12657B6065F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BB91170-469E-41DE-961E-2BF32B2E4DAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BB91170-469E-41DE-961E-2BF32B2E4DAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BB91170-469E-41DE-961E-2BF32B2E4DAD}.Production|Any CPU.ActiveCfg = Release|Any CPU
+		{0BB91170-469E-41DE-961E-2BF32B2E4DAD}.Production|Any CPU.Build.0 = Release|Any CPU
+		{0BB91170-469E-41DE-961E-2BF32B2E4DAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BB91170-469E-41DE-961E-2BF32B2E4DAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

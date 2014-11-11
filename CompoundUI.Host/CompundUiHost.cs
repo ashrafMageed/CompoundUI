@@ -35,4 +35,34 @@ namespace CompoundUI.Host
             get { return "UI Composition Host"; }
         }
     }
+
+    public class CompositionHost : IHostService, ISpecifyServiceDetails
+    {
+        private IDisposable _server;
+
+        public void StartService()
+        {
+            _server = WebApp.Start<Composition.Startup>(new StartOptions(ConfigurationManager.AppSettings["HostUrl"]));
+        }
+
+        public void StopService()
+        {
+            _server.Dispose();
+        }
+
+        public string ServiceDisplayName
+        {
+            get { return "CU.Composition"; }
+        }
+
+        public string ServiceName
+        {
+            get { return "CU.Composition"; }
+        }
+
+        public string ServiceDescription
+        {
+            get { return "UI Composition Host"; }
+        }
+    }
 }

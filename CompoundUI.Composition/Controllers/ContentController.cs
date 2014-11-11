@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using CompoundUI.Core;
 
-namespace CompoundUI.TestEndpoint.Controllers
+namespace CompoundUI.Composition.Controllers
 {
     public class ContentController : ApiController
     {
